@@ -1,4 +1,3 @@
-
 using Base58
 using Base.Test
 
