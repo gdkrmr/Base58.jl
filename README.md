@@ -1,5 +1,5 @@
 # Base58
-
+[![Build Status](https://travis-ci.org/gdkrmr/Base58.jl.svg?branch=master)](https://travis-ci.org/gdkrmr/Base58.jl)
 
 Base58 and Base58Check encoding
 
