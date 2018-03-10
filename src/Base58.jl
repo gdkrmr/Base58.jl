@@ -1,4 +1,5 @@
 module Base58
+export base58encode, base58decode, base58checkencode, base58checkdecode
 
 import SHA: sha256
 
