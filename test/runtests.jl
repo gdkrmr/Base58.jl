@@ -31,7 +31,7 @@ using Base.Test
 
 end
 
-@testset "base58check" begin
+@testset "Base58Check" begin
 
     # https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
     address = [0x00, 0x01, 0x09, 0x66, 0x77, 0x60, 0x06, 0x95, 0x3D, 0x55, 0x67, 0x43,
