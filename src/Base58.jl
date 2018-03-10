@@ -3,21 +3,11 @@ export base58encode, base58decode, base58checkencode, base58checkdecode
 
 import SHA: sha256
 
-# import Base: read, write, close, eof, empty!
-# export Base58EncodePipe, Base58DecodePipe, base58encode, base58decode
-
 if VERSION < v"0.7.0-DEV.3213"
     codeunits(x) = convert(Array{UInt8}, x)
 end
 
 struct NotInAlphabetException <: Exception end
-
-# struct Base58
-#     data::Vector{UInt8}
-# end
-# struct Base58Check
-#     data::Vector{UInt8}
-# end
 
 const BASE58CHARS = (
     codeunits("123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz")...,
