@@ -3,7 +3,7 @@ using Base.Test
 
 @testset "Base58" begin
 
-    const test_data = hcat(
+    test_data = hcat(
         [b"",                b""],
         [[0x00],             b"1"],
         [[0x00, 0x00],       b"11"],

@@ -15,13 +15,19 @@ const BASE58CHARS = (
 const SPACE = UInt8(' ')
 const ZEROBASE58 = UInt8('1')
 
-const REVBASE58CHARS = ntuple(i -> findfirst(BASE58CHARS, UInt8(i)) |>
-                                   x -> x == 0 ? typemax(UInt8) : UInt8(x - 1),
-                              typemax(UInt8))
+const REVBASE58CHARS = if VERSION < v"0.7.0-DEV.4455"
+    ntuple(i -> findfirst(BASE58CHARS, UInt8(i)) |>
+                x -> x == 0 ? typemax(UInt8) : UInt8(x - 1),
+           typemax(UInt8))
+else
+    ntuple(i -> findfirst(equalto(UInt8(i)), BASE58CHARS) |>
+                x -> x == nothing ? typemax(UInt8) : UInt8(x - 1),
+           typemax(UInt8))
+end
 
 const BASE = 58
 
-function base58encode(x::T) where T <: Union{Array{UInt8, 1},
+function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
                                              NTuple{N, UInt8} where N}
 
     if length(x) == 0
@@ -78,7 +84,7 @@ function base58encode(x::T) where T <: Union{Array{UInt8, 1},
     res
 end
 
-function base58decode(x::T) where T <: Union{Array{UInt8, 1},
+function base58decode(x::T) where T <: Union{DenseArray{UInt8, 1},
                                              NTuple{N, UInt8} where N}
 
     i = 1
@@ -140,7 +146,7 @@ function base58decode(x::T) where T <: Union{Array{UInt8, 1},
 end
 
 function base58checkencode(payload::T) where
-    T <: Union{Array{UInt8, 1}, NTuple{N, UInt8} where N}
+    T <: Union{DenseArray{UInt8, 1}, NTuple{N, UInt8} where N}
 
     checksum = sha256(sha256(payload))[1:4]
 
@@ -148,7 +154,7 @@ function base58checkencode(payload::T) where
 end
 
 function base58checkdecode(x::T, check::Bool = true) where
-    T <: Union{Array{UInt8, 1}, NTuple{N, UInt8} where N}
+    T <: Union{DenseArray{UInt8, 1}, NTuple{N, UInt8} where N}
 
     dec = base58decode(x)
     payload = dec[1:end-4]
