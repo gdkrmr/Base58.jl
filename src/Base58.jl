@@ -20,7 +20,7 @@ const REVBASE58CHARS = if VERSION < v"0.7.0-DEV.4455"
                 x -> x == 0 ? typemax(UInt8) : UInt8(x - 1),
            typemax(UInt8))
 else
-    ntuple(i -> findfirst(equalto(UInt8(i)), BASE58CHARS) |>
+    ntuple(i -> findfirst(isequal(UInt8(i)), BASE58CHARS) |>
                 x -> x == nothing ? typemax(UInt8) : UInt8(x - 1),
            typemax(UInt8))
 end
