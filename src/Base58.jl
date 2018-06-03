@@ -60,8 +60,6 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
 
         i = 0
         i_res = length_result
-
-            carry += 0x100 * res[i_res]
         while (carry != 0 || i < l) && i_res > 1
             carry += UInt64(0x100) * UInt64(res[i_res])
             carry, res[i_res] = divrem(carry, UInt64(BASE))
