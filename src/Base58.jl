@@ -137,7 +137,8 @@ function base58decode(x::T) where T <: Union{ DenseArray{UInt8, 1},
         i += 1
     end
 
-    @inbounds if out_size > 0
+    # The res = ...; return res is only for julia 0.6 compat
+    @inbounds res = if out_size > 0
 
         i = 1
         while i <= out_size && res[i] == 0
@@ -154,6 +155,7 @@ function base58decode(x::T) where T <: Union{ DenseArray{UInt8, 1},
     else
         res
     end
+    return res
 end
 
 function base58checkencode(payload::T) where
