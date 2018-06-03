@@ -113,7 +113,9 @@ function base58decode(x::T) where T <: Union{ DenseArray{UInt8, 1},
 
         carry = UInt64(REVBASE58CHARS[x[i]])
         if carry == UInt64(typemax(UInt8))
-            throw(ArgumentError("Letter "* Char(x[i]) * " not in Base58 alphabet"))
+            throw(ArgumentError(
+                "Letter " * Char(x[i]) * " not in Base58 alphabet"
+            ))
         end
 
         j = 0
