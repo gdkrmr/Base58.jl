@@ -37,7 +37,8 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
     end
 
     n_zeros = 0
-    while n_zeros < length(x) && x[n_zeros + 1] == 0
+    for c in x
+        c != 0 && break
         n_zeros += 1
     end
 
