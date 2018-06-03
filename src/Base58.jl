@@ -29,6 +29,8 @@ end
 
 const BASE = 58
 
+encode(x::UInt8) = @inbounds return BASE58CHARS[x + 1]
+
 function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
                                              NTuple{N, UInt8} where N}
 
@@ -81,8 +83,8 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
     end
 
     res = res[i_res-n_zeros:end]
-        res[i] = BASE58CHARS[res[i] + 1]
     @inbounds for i in eachindex(res)
+        res[i] = encode(res[i])
     end
 
     res
