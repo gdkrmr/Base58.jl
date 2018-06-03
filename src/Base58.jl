@@ -52,7 +52,7 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
     l = 0
 
     i_x = 1
-    while i_x <= length(x)
+    @inbounds while i_x <= length(x)
 
         carry = UInt64(x[i_x])
 
@@ -75,14 +75,14 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
     end
 
     i_res = 1
-    while i_res < length_result && res[i_res] == 0
+    @inbounds while i_res < length_result && res[i_res] == 0
         res[i_res] = 0
         i_res += 1
     end
 
     res = res[i_res-n_zeros:end]
-    for i in eachindex(res)
         res[i] = BASE58CHARS[res[i] + 1]
+    @inbounds for i in eachindex(res)
     end
 
     res
