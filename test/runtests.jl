@@ -29,6 +29,16 @@ using Base.Test
         end
     end
 
+    for i in 1:size(test_data, 2)
+        if(test_data[1, i] == nothing)
+            @eval @test_throws ArgumentError Base58.base58decode([b"   "..., $(test_data)[2, $i]...])
+        else
+            @eval @test Base58.base58decode([b"    "..., $(test_data)[2, $i]...]) == $(test_data)[1, $i]
+        end
+    end
+
+    @test base58decode(b"     ") == UInt8[]
+    @test base58decode(b"11111") == [0x00 for i in 1:5]
 end
 
 @testset "Base58Check" begin
