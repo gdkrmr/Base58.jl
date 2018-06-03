@@ -89,35 +89,39 @@ end
 
 function base58decode(x::T) where T <: Union{ DenseArray{UInt8, 1},
                                               NTuple{N, UInt8} where N }
-
+    # Leading spaces will be ignored
     i = 1
-    while i <= length(x) && x[i] == SPACE
-        i += 1
+    for xx in x
+        if xx == SPACE
+            i += 1
+        else
+            break
+        end
     end
 
     n_zeros = 0
-    while i <= length(x) && x[i] == ZEROBASE58
+    @inbounds while i <= length(x) && x[i] == ZEROBASE58
         n_zeros += 1
         i += 1
     end
 
-    out_size = (length(x) - n_zeros) * ceil(Int, log(58) / log(256))
+    out_size = ceil(Int64, (length(x) - n_zeros) * log(58) / log(256) + 1)
     res = zeros(UInt8, out_size)
 
     l = 0
-    while i <= length(x) && x[i] != SPACE
+    @inbounds while i <= length(x) && x[i] != SPACE
 
-        carry = REVBASE58CHARS[x[i]]
-        if carry == typemax(UInt8)
-            throw(ArgumentError("Letter not in Base58 alphabet"))
+        carry = UInt64(REVBASE58CHARS[x[i]])
+        if carry == UInt64(typemax(UInt8))
+            throw(ArgumentError("Letter "* Char(x[i]) * " not in Base58 alphabet"))
         end
 
         j = 0
-        k = length(res)
+        k = out_size
         while (carry != 0 || j < l) && k > 0
 
-            carry +=  58 * res[k]
-            carry, res[k] = divrem(carry, 256)
+            carry +=  UInt64(BASE) * res[k]
+            carry, res[k] = divrem(carry, UInt64(256))
 
             k -= 1
             j += 1
@@ -129,18 +133,22 @@ function base58decode(x::T) where T <: Union{ DenseArray{UInt8, 1},
         i += 1
     end
 
-    while i < length(x) && x[i] == SPACE
+    @inbounds while i < length(x) && x[i] == SPACE
         i += 1
     end
 
-    if length(res) > 0
+    @inbounds if out_size > 0
 
         i = 1
-        while i <= length(res) && res[i] == 0
+        while i <= out_size && res[i] == 0
             i += 1
         end
 
-        append!(zeros(UInt8, n_zeros), res[i:end])
+        if n_zeros > 0
+            prepend!(res[i:end], zeros(UInt8, n_zeros))
+        else
+            res[i:end]
+        end
     elseif n_zeros > 0
         zeros(UInt8, n_zeros)
     else
