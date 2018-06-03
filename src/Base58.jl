@@ -33,7 +33,7 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
                                              NTuple{N, UInt8} where N}
 
     if length(x) == 0
-        return codeunits("")
+        return UInt8[]
     end
 
     n_zeros = 0
