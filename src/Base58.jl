@@ -48,7 +48,7 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
         return fill(ZEROBASE58, length(x))
     end
 
-    length_result = length(x) * ceil(Int64, log(256) / log(BASE))
+    length_result = ceil(Int64, length(x) * log(256) / log(BASE) + 1)
 
     res = zeros(UInt8, (length_result, ))
     l = 0
