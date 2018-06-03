@@ -10,7 +10,7 @@ using Base.Test
         [b"hello world",     b"StV1DL6CwTryKyV"],
         [b"\0\0hello world", b"11StV1DL6CwTryKyV"],
         [nothing,            b"3vQOB7B6uFg4oH"],
-        [b""" !"#\$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~""",
+        [b""" !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~""",
                              b"3WSNuyEGf19K7EdeCmokbtTAXJwJUdvg8QXxAacYC7kR1bQoYeWVr5iMUHvxvv4FCFY48dVUrX6BrFLod6zsEhHU9NciUXFM17h1qtveYD7ocbnXQyuY84An9nAvEjdt6H"]
     )
 
