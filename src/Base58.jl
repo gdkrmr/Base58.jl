@@ -42,11 +42,11 @@ function base58encode(x::T) where T <: Union{DenseArray{UInt8, 1},
         n_zeros += 1
     end
 
-    length_result = length(x) * ceil(Int, log(256) / log(BASE))
-
     if n_zeros == length(x)
         return fill(ZEROBASE58, length(x))
     end
+
+    length_result = length(x) * ceil(Int64, log(256) / log(BASE))
 
     res = zeros(UInt8, (length_result, ))
     l = 0
